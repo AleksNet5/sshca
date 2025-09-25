@@ -13,10 +13,23 @@
             "outputPath": "dist/sshca-web/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "assets": ["src/favicon.ico", "src/assets"]
-          }
+            "assets": []
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
-  }
+  },
+  "defaultProject": "sshca-web"
 }
