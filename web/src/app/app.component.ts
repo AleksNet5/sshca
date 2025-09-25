@@ -1,15 +1,14 @@
+// web/src/app/app.component.ts
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { provideHttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';  // <-- add
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [FormsModule],                     // <-- add
-  providers: [provideHttpClient()],
+  imports: [FormsModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']          // <-- plural
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   apiBase = '/api';
@@ -32,13 +31,8 @@ export class AppComponent {
     const headers = new HttpHeaders({'Content-Type':'application/json'});
     this.http.post<any>(`${this.apiBase}/api/v1/sign`, body, { headers })
       .subscribe({
-        next: r => {
-          this.result = r.cert;
-          this.serial = r.serial;
-        },
-        error: err => {
-          alert('Sign error: ' + (err.error?.detail || err.message));
-        }
+        next: r => { this.result = r.cert; this.serial = r.serial; },
+        error: err => alert('Sign error: ' + (err.error?.detail || err.message))
       });
   }
 
