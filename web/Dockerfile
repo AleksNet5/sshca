@@ -19,3 +19,6 @@ RUN npm run build
 FROM nginx:1.27-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/sshca-web /usr/share/nginx/html
+RUN [ -f /usr/share/nginx/html/index.html ] || \
+    printf '<!doctype html><title>Build missing index.html</title><h1>Angular build missing index.html</h1>' \
+    > /usr/share/nginx/html/index.html
