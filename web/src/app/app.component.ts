@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { provideHttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';  // <-- add
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],                     // <-- add
   providers: [provideHttpClient()],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']          // <-- plural
 })
 export class AppComponent {
   apiBase = '/api';
