@@ -10,7 +10,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/sshca-web/browser",
+            "outputPath": "dist/sshca-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.json",
@@ -20,15 +20,8 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false
-            },
-            "development": {
-              "optimization": false,
-              "sourceMap": true
-            }
+            "production": { "optimization": true, "outputHashing": "all", "sourceMap": false },
+            "development": { "optimization": false, "sourceMap": true }
           },
           "defaultConfiguration": "production"
         }

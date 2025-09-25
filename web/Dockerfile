@@ -18,4 +18,4 @@ RUN npm run build
 # serve
 FROM nginx:1.27-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist/sshca-web/browser /usr/share/nginx/html
+COPY --from=build /app/dist/sshca-web /usr/share/nginx/html
