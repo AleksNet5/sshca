@@ -24,7 +24,8 @@ services:
     volumes:
       - ./ca-keys:/keys:ro
     depends_on:
-      - db
+        db:
+          condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
       interval: 10s
