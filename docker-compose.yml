@@ -1,39 +1,58 @@
-version: "3.9"
-
 services:
-  api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    env_file: .env
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
     volumes:
-      - api_data:/data
-    expose:
-      - "5000"
-    command: gunicorn --workers 2 --bind 0.0.0.0:5000 "wsgi:app"
-    restart: unless-stopped
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  api:
+    build: ./api
+    environment:
+      DB_URL: postgresql+psycopg://$DB_USER:$DB_PASS@db:5432/$DB_NAME
+      CA_PRIV_KEY: /keys/ssh_user_ca
+      CA_PUB_KEY: /keys/ssh_user_ca.pub
+      DEFAULT_CERT_TTL: 16h
+      API_SECRET: ${API_SECRET}
+    volumes:
+      - ./ca-keys:/keys:ro
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
 
   web:
-    build:
-      context: ./web
-      dockerfile: Dockerfile
-    environment:
-      - VITE_API_URL=/api
+    build: ./web
     depends_on:
       - api
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
 
   nginx:
-    image: nginx:1.27-alpine
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - web_dist:/usr/share/nginx/html:ro
+    build: ./nginx
     ports:
-      - "80:80"
+      - "8080:80"
     depends_on:
       - web
       - api
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
 
 volumes:
-  api_data:
-  web_dist:
+  db_data:

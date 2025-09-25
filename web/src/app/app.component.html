@@ -1,0 +1,37 @@
+<div style="max-width:900px;margin:40px auto;font-family:system-ui;">
+  <h1>SSH User Certificate Issuer</h1>
+  <p>Generate short-lived SSH certificates for users (signed by your OpenSSH CA).</p>
+
+  <div style="display:grid;gap:12px;grid-template-columns:1fr 1fr;">
+    <label>Username
+      <input style="width:100%" [(ngModel)]="username" placeholder="alice" >
+    </label>
+
+    <label>Principals (comma-separated)
+      <input style="width:100%" [(ngModel)]="principals" placeholder="devops,admin">
+    </label>
+
+    <label>TTL
+      <input style="width:100%" [(ngModel)]="ttl" placeholder="8h">
+    </label>
+  </div>
+
+  <div style="margin-top:12px;">
+    <label>Public key (ssh-ed25519 ... or ssh-rsa ...)</label>
+    <textarea style="width:100%;height:120px;" [(ngModel)]="pubkey" placeholder="ssh-ed25519 AAAA... user@host"></textarea>
+  </div>
+
+  <div style="margin-top:12px;">
+    <button (click)="sign()">Sign</button>
+    <button (click)="downloadCert()" [disabled]="!result" style="margin-left:8px;">Download cert</button>
+  </div>
+
+  <div *ngIf="result" style="margin-top:16px;">
+    <h3>Certificate (copy or download):</h3>
+    <pre style="white-space:pre-wrap;">{{result}}</pre>
+    <p *ngIf="serial">Serial: {{serial}}</p>
+  </div>
+
+  <hr style="margin:24px 0;">
+  <p><strong>API endpoints:</strong> <code>/api/api/v1/sign</code>, <code>/api/api/v1/revoke</code>, <code>/api/api/v1/authorized-principals</code>, <code>/api/api/v1/revoked_keys</code></p>
+</div>
