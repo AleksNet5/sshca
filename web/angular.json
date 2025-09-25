@@ -12,8 +12,11 @@
           "options": {
             "outputPath": "dist/sshca-web/browser",
             "index": "src/index.html",
-            "main": "src/main.ts",
-            "assets": []
+            "browser": "src/main.ts",
+            "assets": [],
+            "polyfills": [],
+            "styles": [],
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -30,6 +33,5 @@
         }
       }
     }
-  },
-  "defaultProject": "sshca-web"
+  }
 }
