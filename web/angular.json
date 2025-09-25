@@ -13,8 +13,9 @@
             "outputPath": "dist/sshca-web/browser",
             "index": "src/index.html",
             "browser": "src/main.ts",
+            "tsConfig": "tsconfig.json",
+            "polyfills": ["zone.js"],
             "assets": [],
-            "polyfills": [],
             "styles": [],
             "scripts": []
           },
